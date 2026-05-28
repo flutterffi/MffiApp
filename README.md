@@ -4,7 +4,9 @@ Kotlin Android app architecture skeleton.
 
 ## Stack
 
-- Kotlin 2.3.20
+- Gradle 9.4.1
+- Android Gradle Plugin 9.2.1
+- Kotlin 2.3.21
 - Jetpack Compose
 - Material 3
 - Type-safe Navigation Compose

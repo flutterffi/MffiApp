@@ -56,7 +56,7 @@ mffi.android.library       Android library defaults
 mffi.android.compose       Compose compiler and build feature defaults
 ```
 
-These plugins centralize `compileSdk`, `minSdk`, Java 21, Kotlin JVM 21, vector drawable support, and Compose enablement. Module build files should keep only their namespace, module-specific plugins, and dependencies.
+These plugins centralize `compileSdk`, `minSdk`, Java 21, AGP built-in Kotlin support, vector drawable support, and Compose enablement. Module build files should keep only their namespace, module-specific plugins, and dependencies.
 
 ## Feature Pattern
 
