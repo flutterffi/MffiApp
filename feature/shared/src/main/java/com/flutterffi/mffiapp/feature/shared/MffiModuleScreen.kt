@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
+import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiAdaptiveContent
 import com.flutterffi.mffiapp.core.designsystem.images.MffiImages
 import com.flutterffi.mffiapp.core.designsystem.strings.MffiStrings
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
@@ -41,77 +42,79 @@ fun MffiModuleScreen(
 ) {
     val spacing = LocalMffiSpacing.current
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(spacing.large),
-        verticalArrangement = Arrangement.spacedBy(spacing.medium),
-    ) {
-        item(key = "header-$title") {
-            Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                Text(
-                    text = summary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
-        if (previewImageUrl != null) {
-            item(key = "preview-$previewImageUrl") {
-                RemotePreviewCard(imageUrl = previewImageUrl)
-            }
-        }
-
-        if (isLoading || isRefreshing) {
-            item(key = "loading") {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(spacing.extraLarge),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
+    MffiAdaptiveContent(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(spacing.large),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+        ) {
+            item(key = "header-$title") {
+                Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                    Text(
+                        text = summary,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
-        }
 
-        if (errorMessage != null) {
-            item(key = "error-$errorMessage") {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                    ),
-                ) {
-                    Column(
-                        modifier = Modifier.padding(spacing.large),
-                        verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            if (previewImageUrl != null) {
+                item(key = "preview-$previewImageUrl") {
+                    RemotePreviewCard(imageUrl = previewImageUrl)
+                }
+            }
+
+            if (isLoading || isRefreshing) {
+                item(key = "loading") {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(spacing.extraLarge),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Text(
-                            text = errorMessage,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                        )
-                        if (onRetry != null) {
-                            Button(onClick = onRetry) {
-                                Text(text = stringResource(MffiStrings.RetryAction.id))
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+
+            if (errorMessage != null) {
+                item(key = "error-$errorMessage") {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                        ),
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(spacing.large),
+                            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                        ) {
+                            Text(
+                                text = errorMessage,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                            )
+                            if (onRetry != null) {
+                                Button(onClick = onRetry) {
+                                    Text(text = stringResource(MffiStrings.RetryAction.id))
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        items(
-            items = cards,
-            key = { card -> card.id },
-        ) { card ->
-            FeatureCardRow(card = card)
+            items(
+                items = cards,
+                key = { card -> card.id },
+            ) { card ->
+                FeatureCardRow(card = card)
+            }
         }
     }
 }

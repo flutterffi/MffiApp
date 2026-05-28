@@ -16,6 +16,7 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 - Koin
 - Coil
 - Lifecycle ViewModel
+- Material 3 Window Size Class
 - Android vector resources
 
 ## Gradle Modules
@@ -145,3 +146,10 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Shared UI text is exposed through `MffiStrings`.
 - Fonts are centralized through `MffiFontFamilies`; the project uses platform default fonts until a real brand font is chosen.
 - Theme colors and spacing are centralized in `MffiColors`, `MffiTheme`, and `MffiSpacing`.
+
+## Adaptation Policy
+
+- Runtime window size classification flows through `MffiWindowAdaptiveInfo`.
+- Adaptive layout constraints go through `MffiAdaptiveContent`.
+- Phone, tablet, dark mode, and large-font previews should use shared `Mffi*Preview` annotations.
+- Feature screens should consume adaptive design system APIs instead of reading raw window metrics directly.

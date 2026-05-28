@@ -9,6 +9,7 @@ Kotlin Android app architecture skeleton.
 - Kotlin 2.3.21
 - Jetpack Compose
 - Material 3
+- Material 3 Window Size Class
 - Type-safe Navigation Compose
 - Coroutines, Flow, and Lifecycle KTX
 - Ktor Client with Kotlinx Serialization
@@ -57,6 +58,7 @@ Kotlin Android app architecture skeleton.
 - Remote images render through Coil with stable `String` URL models and stable list keys.
 - Android resources are wrapped from Kotlin through typed `core/designsystem` resource gateways.
 - App-wide color, typography, spacing, and theme decisions stay in `core/designsystem/theme`.
+- Window size and adaptive layout decisions stay in `core/designsystem/adaptive`.
 
 Run:
 

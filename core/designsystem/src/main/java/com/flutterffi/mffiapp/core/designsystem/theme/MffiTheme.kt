@@ -2,10 +2,14 @@ package com.flutterffi.mffiapp.core.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import com.flutterffi.mffiapp.core.designsystem.adaptive.LocalMffiWindowAdaptiveInfo
+import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiWindowAdaptiveInfo
 import com.flutterffi.mffiapp.core.designsystem.colors.MffiColors
 
 private val LightColorScheme = lightColorScheme(
@@ -45,9 +49,16 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun MffiTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    adaptiveInfo: MffiWindowAdaptiveInfo = MffiWindowAdaptiveInfo(
+        widthSizeClass = WindowWidthSizeClass.Compact,
+        heightSizeClass = WindowHeightSizeClass.Medium,
+    ),
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider(LocalMffiSpacing provides MffiSpacing()) {
+    CompositionLocalProvider(
+        LocalMffiSpacing provides MffiSpacing(),
+        LocalMffiWindowAdaptiveInfo provides adaptiveInfo,
+    ) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
             typography = MffiTypography,
