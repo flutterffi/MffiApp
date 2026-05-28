@@ -138,6 +138,10 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 ## Resource Policy
 
 - App icons and tab icons live in the owning module `res/drawable` directory.
-- Kotlin icon references go through `MffiIcons`.
+- Kotlin drawable references go through typed `MffiDrawableResource` wrappers.
+- Kotlin string references go through typed `MffiStringResource` wrappers.
+- Icons are exposed through `MffiIcons`.
+- Images are exposed through `MffiImages`.
+- Shared UI text is exposed through `MffiStrings`.
 - Fonts are centralized through `MffiFontFamilies`; the project uses platform default fonts until a real brand font is chosen.
 - Theme colors and spacing are centralized in `MffiColors`, `MffiTheme`, and `MffiSpacing`.

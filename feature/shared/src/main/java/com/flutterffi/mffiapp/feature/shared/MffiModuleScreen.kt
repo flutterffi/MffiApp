@@ -20,7 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
+import com.flutterffi.mffiapp.core.designsystem.images.MffiImages
+import com.flutterffi.mffiapp.core.designsystem.strings.MffiStrings
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
 import com.flutterffi.mffiapp.core.domain.model.FeatureCard
 
@@ -95,7 +99,7 @@ fun MffiModuleScreen(
                         )
                         if (onRetry != null) {
                             Button(onClick = onRetry) {
-                                Text(text = "Retry")
+                                Text(text = stringResource(MffiStrings.RetryAction.id))
                             }
                         }
                     }
@@ -122,8 +126,10 @@ private fun RemotePreviewCard(imageUrl: String) {
     ) {
         AsyncImage(
             model = imageUrl,
-            contentDescription = "Remote preview",
+            contentDescription = stringResource(MffiStrings.RemotePreviewContentDescription.id),
             contentScale = ContentScale.Crop,
+            placeholder = painterResource(MffiImages.Placeholder.id),
+            error = painterResource(MffiImages.Placeholder.id),
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f),
@@ -159,6 +165,8 @@ private fun FeatureCardRow(card: FeatureCard) {
                     model = card.imageUrl,
                     contentDescription = card.title,
                     contentScale = ContentScale.Crop,
+                    placeholder = painterResource(MffiImages.Placeholder.id),
+                    error = painterResource(MffiImages.Placeholder.id),
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(16f / 9f),

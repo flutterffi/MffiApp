@@ -55,7 +55,7 @@ Kotlin Android app architecture skeleton.
 - Dependency injection uses Koin.
 - Home demonstrates a Ktor refresh, Room cache update, Flow observation, and Compose retry UI.
 - Remote images render through Coil with stable `String` URL models and stable list keys.
-- Android resources are wrapped from Kotlin through `core/designsystem/icons`.
+- Android resources are wrapped from Kotlin through typed `core/designsystem` resource gateways.
 - App-wide color, typography, spacing, and theme decisions stay in `core/designsystem/theme`.
 
 Run:

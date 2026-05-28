@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mffi_tab_home">Home</string>
+    <string name="mffi_tab_explore">Explore</string>
+    <string name="mffi_tab_messages">Messages</string>
+    <string name="mffi_tab_profile">Profile</string>
+    <string name="mffi_action_retry">Retry</string>
+    <string name="mffi_remote_preview_content_description">Remote preview</string>
+</resources>

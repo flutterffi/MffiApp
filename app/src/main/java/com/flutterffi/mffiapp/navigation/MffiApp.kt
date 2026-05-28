@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -30,6 +31,7 @@ fun MffiApp() {
         bottomBar = {
             NavigationBar {
                 MffiBottomDestinations.forEach { destination ->
+                    val label = stringResource(destination.label.id)
                     NavigationBarItem(
                         selected = currentDestination.isTopLevelDestination(destination),
                         onClick = {
@@ -43,11 +45,11 @@ fun MffiApp() {
                         },
                         icon = {
                             Icon(
-                                painter = painterResource(destination.icon),
-                                contentDescription = destination.label,
+                                painter = painterResource(destination.icon.id),
+                                contentDescription = label,
                             )
                         },
-                        label = { Text(destination.label) },
+                        label = { Text(label) },
                     )
                 }
             }
