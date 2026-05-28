@@ -65,6 +65,7 @@ Each feature starts with:
 <Feature>UiState.kt
 <Feature>ViewModel.kt
 <Feature>Screen.kt
+navigation/<Feature>Navigation.kt
 ```
 
 Keep UI state immutable. The ViewModel exposes `StateFlow`, owns state mutation, and launches coroutine work in `viewModelScope`. The Screen renders state through `collectAsStateWithLifecycle` and sends user events back to the ViewModel.
@@ -73,7 +74,7 @@ ViewModels depend on use cases instead of repositories. Use cases define app act
 
 ## Navigation Boundaries
 
-All type-safe route objects live in `:core:navigation`. Feature modules must not define app-level routes or import routes from another feature module. When one feature needs to move to another screen, it emits a navigation event or uses a route contract from `:core:navigation`; the app navigation host remains responsible for wiring the destination.
+All type-safe route objects live in `:core:navigation`. Feature modules must not define app-level routes or import routes from another feature module. Each feature owns its `NavGraphBuilder` destination entry in a feature-local `navigation` package. When one feature needs to move to another screen, it emits a navigation event or uses a route contract from `:core:navigation`; the app navigation host composes feature graph entries without owning feature screen or ViewModel wiring.
 
 This keeps per-feature modules isolated while still allowing Kotlinx Serialization route objects for type-safe Navigation Compose.
 

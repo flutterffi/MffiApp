@@ -7,28 +7,18 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.flutterffi.mffiapp.core.navigation.ExploreRoute
 import com.flutterffi.mffiapp.core.navigation.HomeRoute
-import com.flutterffi.mffiapp.core.navigation.MessagesRoute
 import com.flutterffi.mffiapp.core.navigation.MffiBottomDestinations
-import com.flutterffi.mffiapp.core.navigation.ProfileRoute
 import com.flutterffi.mffiapp.core.navigation.isTopLevelDestination
-import com.flutterffi.mffiapp.feature.explore.ExploreScreen
-import com.flutterffi.mffiapp.feature.explore.ExploreViewModel
-import com.flutterffi.mffiapp.feature.home.HomeScreen
-import com.flutterffi.mffiapp.feature.home.HomeViewModel
-import com.flutterffi.mffiapp.feature.messages.MessagesScreen
-import com.flutterffi.mffiapp.feature.messages.MessagesViewModel
-import com.flutterffi.mffiapp.feature.profile.ProfileScreen
-import com.flutterffi.mffiapp.feature.profile.ProfileViewModel
-import org.koin.androidx.compose.koinViewModel
+import com.flutterffi.mffiapp.feature.explore.navigation.exploreScreen
+import com.flutterffi.mffiapp.feature.home.navigation.homeScreen
+import com.flutterffi.mffiapp.feature.messages.navigation.messagesScreen
+import com.flutterffi.mffiapp.feature.profile.navigation.profileScreen
 
 @Composable
 fun MffiApp() {
@@ -68,26 +58,10 @@ fun MffiApp() {
             startDestination = HomeRoute,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable<HomeRoute> {
-                val viewModel: HomeViewModel = koinViewModel()
-                val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-                HomeScreen(uiState = uiState.value)
-            }
-            composable<ExploreRoute> {
-                val viewModel: ExploreViewModel = koinViewModel()
-                val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-                ExploreScreen(uiState = uiState.value)
-            }
-            composable<MessagesRoute> {
-                val viewModel: MessagesViewModel = koinViewModel()
-                val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-                MessagesScreen(uiState = uiState.value)
-            }
-            composable<ProfileRoute> {
-                val viewModel: ProfileViewModel = koinViewModel()
-                val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-                ProfileScreen(uiState = uiState.value)
-            }
+            homeScreen()
+            exploreScreen()
+            messagesScreen()
+            profileScreen()
         }
     }
 }
