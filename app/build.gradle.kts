@@ -1,23 +1,15 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    id("mffi.android.application")
+    id("mffi.android.compose")
 }
 
 android {
     namespace = "com.flutterffi.mffiapp"
-    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.flutterffi.mffiapp"
-        minSdk = 24
-        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
-
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -30,19 +22,7 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
-
     buildFeatures {
-        compose = true
         buildConfig = true
     }
 }

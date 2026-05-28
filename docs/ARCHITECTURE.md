@@ -44,6 +44,18 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 - `:core:data` implements `:core:domain` repository contracts.
 - `:core:domain` must not depend on data, UI, navigation, or DI modules.
 
+## Build Logic
+
+Shared Gradle defaults live in `build-logic` as included-build convention plugins:
+
+```text
+mffi.android.application   Android application defaults
+mffi.android.library       Android library defaults
+mffi.android.compose       Compose compiler and build feature defaults
+```
+
+These plugins centralize `compileSdk`, `minSdk`, Java 21, Kotlin JVM 21, vector drawable support, and Compose enablement. Module build files should keep only their namespace, module-specific plugins, and dependencies.
+
 ## Feature Pattern
 
 Each feature starts with:
