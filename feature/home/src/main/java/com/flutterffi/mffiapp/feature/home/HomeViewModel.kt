@@ -3,7 +3,6 @@ package com.flutterffi.mffiapp.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flutterffi.mffiapp.core.domain.result.AppResult
-import com.flutterffi.mffiapp.core.domain.usecase.EnsureDefaultFeatureCardsUseCase
 import com.flutterffi.mffiapp.core.domain.usecase.ObserveFeatureCardsUseCase
 import com.flutterffi.mffiapp.core.domain.usecase.RefreshPreviewImageUseCase
 import com.flutterffi.mffiapp.core.model.MffiModule
@@ -16,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     observeFeatureCards: ObserveFeatureCardsUseCase,
-    private val ensureDefaults: EnsureDefaultFeatureCardsUseCase,
     private val refreshPreviewImage: RefreshPreviewImageUseCase,
 ) : ViewModel() {
     private val previewImageUrl = MutableStateFlow<String?>(null)
@@ -47,7 +45,6 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
-            ensureDefaults()
             when (val result = refreshPreviewImage()) {
                 is AppResult.Success -> previewImageUrl.value = result.data
                 is AppResult.Error -> errorMessage.value = result.message

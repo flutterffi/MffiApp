@@ -8,6 +8,7 @@ import com.flutterffi.mffiapp.feature.messages.di.messagesModule
 import com.flutterffi.mffiapp.feature.profile.di.profileModule
 
 val appModules = listOf(
+    appModule,
     dataModule,
     domainModule,
     homeModule,

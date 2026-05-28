@@ -37,6 +37,7 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 ## Dependency Rules
 
 - `:app` owns Android process entry, app-level navigation, and DI composition.
+- `:app` coordinates app startup work such as default local data seeding.
 - `:app` may depend on all core and feature modules.
 - Feature modules may depend on core modules and `:feature:shared`.
 - Feature modules must not depend on each other.
@@ -90,11 +91,19 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 ## Dependency Injection
 
 - `:app` is the Koin composition root.
+- `appModule` wires application-level coordinators.
 - Data infrastructure bindings live in `dataModule`.
 - Domain use case bindings live in `domainModule`.
 - Feature ViewModel bindings live in feature-owned modules such as `homeModule` and `profileModule`.
 - Feature modules depend on Koin core ViewModel support, not Android Koin APIs.
 - `MffiApplication` loads the full `appModules` list.
+
+## Startup
+
+- `MffiApplication` owns an application coroutine scope.
+- `AppStartupCoordinator` runs process-level startup work once per app process.
+- Feature ViewModels should not perform app-wide initialization.
+- Feature ViewModels can still run feature-local refresh work that directly feeds their own UI state.
 
 ## Testing
 

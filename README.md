@@ -38,6 +38,7 @@ Kotlin Android app architecture skeleton.
 - `:app` is the only module that depends on all feature modules.
 - Shared Android, Kotlin, Java 21, and Compose Gradle defaults live in `build-logic`.
 - Core data and domain bindings live in core-owned Koin modules.
+- App startup work is coordinated from the application module.
 - Feature ViewModel bindings live in feature-owned Koin modules.
 - Feature navigation entries live in feature-owned `navigation` packages.
 - ViewModels depend on use cases, not repositories.
