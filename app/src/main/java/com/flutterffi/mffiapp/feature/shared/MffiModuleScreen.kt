@@ -16,12 +16,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
-import com.flutterffi.mffiapp.core.domain.model.FeatureCard
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
+import com.flutterffi.mffiapp.core.domain.model.FeatureCard
 
 @Composable
 fun MffiModuleScreen(
@@ -39,7 +39,7 @@ fun MffiModuleScreen(
         contentPadding = PaddingValues(spacing.large),
         verticalArrangement = Arrangement.spacedBy(spacing.medium),
     ) {
-        item {
+        item(key = "header-$title") {
             Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                 Text(
                     text = title,
@@ -55,27 +55,13 @@ fun MffiModuleScreen(
         }
 
         if (previewImageUrl != null) {
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                ) {
-                    AsyncImage(
-                        model = previewImageUrl,
-                        contentDescription = "Remote preview",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(16f / 9f),
-                    )
-                }
+            item(key = "preview-$previewImageUrl") {
+                RemotePreviewCard(imageUrl = previewImageUrl)
             }
         }
 
         if (isLoading) {
-            item {
+            item(key = "loading") {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,7 +74,7 @@ fun MffiModuleScreen(
         }
 
         if (errorMessage != null) {
-            item {
+            item(key = "error-$errorMessage") {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -105,28 +91,57 @@ fun MffiModuleScreen(
             }
         }
 
-        items(cards) { card ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-            ) {
-                Column(
-                    modifier = Modifier.padding(spacing.large),
-                    verticalArrangement = Arrangement.spacedBy(spacing.small),
-                ) {
-                    Text(
-                        text = card.title,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    Text(
-                        text = card.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
+        items(
+            items = cards,
+            key = { card -> card.id },
+        ) { card ->
+            FeatureCardRow(card = card)
+        }
+    }
+}
+
+@Composable
+private fun RemotePreviewCard(imageUrl: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "Remote preview",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f),
+        )
+    }
+}
+
+@Composable
+private fun FeatureCardRow(card: FeatureCard) {
+    val spacing = LocalMffiSpacing.current
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(spacing.large),
+            verticalArrangement = Arrangement.spacedBy(spacing.small),
+        ) {
+            Text(
+                text = card.title,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = card.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

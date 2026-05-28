@@ -52,6 +52,12 @@ Keep UI state immutable. The ViewModel exposes `StateFlow`, owns state mutation,
 
 ViewModels depend on use cases instead of repositories. Use cases define app actions such as seeding default data, observing module cards, and refreshing remote preview data. Repository interfaces remain in the domain layer, while repository implementations stay in the data layer.
 
+## Navigation Boundaries
+
+All type-safe route objects live in `core/navigation`. Feature modules must not define app-level routes or import routes from another feature module. When one feature needs to move to another screen, it emits a navigation event or uses a route contract from `core/navigation`; the app navigation host remains responsible for wiring the destination.
+
+This keeps per-feature modules isolated while still allowing Kotlinx Serialization route objects for type-safe Navigation Compose.
+
 ## Infrastructure
 
 - Ktor Client handles network transport.
@@ -60,6 +66,13 @@ ViewModels depend on use cases instead of repositories. Use cases define app act
 - Koin wires app dependencies without annotation processing.
 - KSP is used for Room code generation.
 - Coil renders remote image URLs in Compose.
+
+## Compose Image Stability
+
+- Pass stable `String` URLs directly to Coil `AsyncImage`.
+- Avoid creating ad hoc image model objects in ViewModels or during every recomposition.
+- Use stable keys for `LazyColumn` items that render images or remote-backed content.
+- Domain list models should expose durable identifiers from the data layer instead of relying on list position.
 
 ## Current Tabs
 

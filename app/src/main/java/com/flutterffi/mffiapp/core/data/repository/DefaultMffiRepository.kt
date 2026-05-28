@@ -16,6 +16,7 @@ class DefaultMffiRepository(
         return featureCardDao.observeByModule(module).map { entities ->
             entities.map { entity ->
                 FeatureCard(
+                    id = entity.id,
                     title = entity.title,
                     description = entity.description,
                 )

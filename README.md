@@ -36,11 +36,12 @@ app/src/main/java/com/flutterffi/mffiapp/
 - Shared UI rules live under `core/designsystem`.
 - Route definitions and bottom tabs live under `core/navigation`.
 - Routes are type-safe Kotlin serialization objects.
+- Feature modules depend on shared route contracts, not on each other.
 - Async state flows through Coroutines, Flow, and `collectAsStateWithLifecycle`.
 - Network transport uses Ktor Client and Kotlinx Serialization.
 - Local persistence uses Room with KSP.
 - Dependency injection uses Koin.
-- Remote images render through Coil.
+- Remote images render through Coil with stable `String` URL models and stable list keys.
 - Android resources are wrapped from Kotlin through `core/resources` and `core/designsystem/icons`.
 - App-wide color, typography, spacing, and theme decisions stay in `core/designsystem/theme`.
 
