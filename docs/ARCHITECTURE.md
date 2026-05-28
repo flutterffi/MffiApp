@@ -18,25 +18,31 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 - Lifecycle ViewModel
 - Android vector resources
 
-## Package Rules
+## Gradle Modules
 
 ```text
-core/designsystem/colors    Color definitions
-core/designsystem/icons     Drawable icon access
-core/designsystem/theme     Material theme, typography, spacing
-core/data/local             Room database, DAO, entities
-core/data/remote            Ktor Client data source and DTOs
-core/data/repository        Repository implementations
-core/domain/model           Domain models
-core/domain/repository      Repository contracts
-core/domain/result          Typed result wrappers
-core/domain/usecase         Application use cases
-core/model                  Shared app-level model enums
-core/di                     Koin dependency modules
-core/navigation             App routes and bottom navigation
-core/resources              String/resource access wrappers
-feature/<module>            MVVM screen module
+:app                 Application entry point, app navigation host, Koin composition root
+:core:model          Shared app-level model enums
+:core:domain         Domain models, repository contracts, typed results, use cases
+:core:data           Room local source, Ktor remote source, repository implementation
+:core:designsystem   Color definitions, drawable icon access, theme, typography, spacing
+:core:navigation     Type-safe route contracts and bottom destination metadata
+:feature:shared      Shared feature UI state and common Compose module screen
+:feature:home        Home MVVM feature
+:feature:explore     Explore MVVM feature
+:feature:messages    Messages MVVM feature
+:feature:profile     Profile MVVM feature
 ```
+
+## Dependency Rules
+
+- `:app` owns Android process entry, app-level navigation, and DI composition.
+- `:app` may depend on all core and feature modules.
+- Feature modules may depend on core modules and `:feature:shared`.
+- Feature modules must not depend on each other.
+- `:core:navigation` must not depend on feature modules.
+- `:core:data` implements `:core:domain` repository contracts.
+- `:core:domain` must not depend on data, UI, navigation, or DI modules.
 
 ## Feature Pattern
 
@@ -54,7 +60,7 @@ ViewModels depend on use cases instead of repositories. Use cases define app act
 
 ## Navigation Boundaries
 
-All type-safe route objects live in `core/navigation`. Feature modules must not define app-level routes or import routes from another feature module. When one feature needs to move to another screen, it emits a navigation event or uses a route contract from `core/navigation`; the app navigation host remains responsible for wiring the destination.
+All type-safe route objects live in `:core:navigation`. Feature modules must not define app-level routes or import routes from another feature module. When one feature needs to move to another screen, it emits a navigation event or uses a route contract from `:core:navigation`; the app navigation host remains responsible for wiring the destination.
 
 This keeps per-feature modules isolated while still allowing Kotlinx Serialization route objects for type-safe Navigation Compose.
 
@@ -83,8 +89,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 
 ## Resource Policy
 
-- App icons and tab icons live in `res/drawable`.
+- App icons and tab icons live in the owning module `res/drawable` directory.
 - Kotlin icon references go through `MffiIcons`.
-- App strings go through Android string resources, with shared references in `MffiStrings`.
 - Fonts are centralized through `MffiFontFamilies`; the project uses platform default fonts until a real brand font is chosen.
 - Theme colors and spacing are centralized in `MffiColors`, `MffiTheme`, and `MffiSpacing`.
