@@ -1,11 +1,5 @@
 package com.flutterffi.mffiapp.feature.home
 
-import com.flutterffi.mffiapp.core.domain.model.FeatureCard
+import com.flutterffi.mffiapp.feature.shared.state.FeatureModuleUiState
 
-data class HomeUiState(
-    val title: String = "Home",
-    val summary: String = "Application overview and quick actions.",
-    val cards: List<FeatureCard> = emptyList(),
-    val previewImageUrl: String? = null,
-    val isLoading: Boolean = true,
-)
+typealias HomeUiState = FeatureModuleUiState

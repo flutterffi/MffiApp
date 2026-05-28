@@ -30,6 +30,7 @@ fun MffiModuleScreen(
     cards: List<FeatureCard>,
     previewImageUrl: String? = null,
     isLoading: Boolean,
+    errorMessage: String? = null,
 ) {
     val spacing = LocalMffiSpacing.current
 
@@ -82,6 +83,24 @@ fun MffiModuleScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
+                }
+            }
+        }
+
+        if (errorMessage != null) {
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                    ),
+                ) {
+                    Text(
+                        text = errorMessage,
+                        modifier = Modifier.padding(spacing.large),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                    )
                 }
             }
         }

@@ -29,6 +29,9 @@ core/data/remote            Ktor Client data source and DTOs
 core/data/repository        Repository implementations
 core/domain/model           Domain models
 core/domain/repository      Repository contracts
+core/domain/result          Typed result wrappers
+core/domain/usecase         Application use cases
+core/model                  Shared app-level model enums
 core/di                     Koin dependency modules
 core/navigation             App routes and bottom navigation
 core/resources              String/resource access wrappers
@@ -46,6 +49,8 @@ Each feature starts with:
 ```
 
 Keep UI state immutable. The ViewModel exposes `StateFlow`, owns state mutation, and launches coroutine work in `viewModelScope`. The Screen renders state through `collectAsStateWithLifecycle` and sends user events back to the ViewModel.
+
+ViewModels depend on use cases instead of repositories. Use cases define app actions such as seeding default data, observing module cards, and refreshing remote preview data. Repository interfaces remain in the domain layer, while repository implementations stay in the data layer.
 
 ## Infrastructure
 

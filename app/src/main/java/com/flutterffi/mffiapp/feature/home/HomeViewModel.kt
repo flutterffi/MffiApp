@@ -2,7 +2,11 @@ package com.flutterffi.mffiapp.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flutterffi.mffiapp.core.domain.repository.MffiRepository
+import com.flutterffi.mffiapp.core.domain.result.AppResult
+import com.flutterffi.mffiapp.core.domain.usecase.EnsureDefaultFeatureCardsUseCase
+import com.flutterffi.mffiapp.core.domain.usecase.ObserveFeatureCardsUseCase
+import com.flutterffi.mffiapp.core.domain.usecase.RefreshPreviewImageUseCase
+import com.flutterffi.mffiapp.core.model.MffiModule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -11,30 +15,43 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: MffiRepository,
+    observeFeatureCards: ObserveFeatureCardsUseCase,
+    private val ensureDefaults: EnsureDefaultFeatureCardsUseCase,
+    private val refreshPreviewImage: RefreshPreviewImageUseCase,
 ) : ViewModel() {
     private val previewImageUrl = MutableStateFlow<String?>(null)
+    private val errorMessage = MutableStateFlow<String?>(null)
 
     val uiState: StateFlow<HomeUiState> = combine(
-        repository.observeFeatureCards("home"),
+        observeFeatureCards(MffiModule.Home),
         previewImageUrl,
-    ) { cards, imageUrl ->
+        errorMessage,
+    ) { cards, imageUrl, error ->
             HomeUiState(
+                title = "Home",
+                summary = "Application overview and quick actions.",
                 cards = cards,
                 previewImageUrl = imageUrl,
                 isLoading = false,
+                errorMessage = error,
             )
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = HomeUiState(),
+            initialValue = HomeUiState(
+                title = "Home",
+                summary = "Application overview and quick actions.",
+            ),
         )
 
     init {
         viewModelScope.launch {
-            repository.seedDefaults()
-            previewImageUrl.value = repository.refreshPreviewImage()
+            ensureDefaults()
+            when (val result = refreshPreviewImage()) {
+                is AppResult.Success -> previewImageUrl.value = result.data
+                is AppResult.Error -> errorMessage.value = result.message
+            }
         }
     }
 }

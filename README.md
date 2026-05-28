@@ -21,7 +21,8 @@ Kotlin Android app architecture skeleton.
 app/src/main/java/com/flutterffi/mffiapp/
   core/designsystem/   Theme, colors, typography, icons, resources
   core/data/           Ktor remote source, Room database, repository implementation
-  core/domain/         App models and repository contracts
+  core/domain/         App models, result types, use cases, repository contracts
+  core/model/          Shared app-level model enums
   core/di/             Koin modules
   core/navigation/     Bottom tabs and app routes
   feature/             Home, Explore, Messages, Profile modules
@@ -30,6 +31,8 @@ app/src/main/java/com/flutterffi/mffiapp/
 ## Architecture Rules
 
 - One feature owns its `UiState`, `ViewModel`, and `Screen`.
+- ViewModels depend on use cases, not repositories.
+- Use cases own application actions and query boundaries.
 - Shared UI rules live under `core/designsystem`.
 - Route definitions and bottom tabs live under `core/navigation`.
 - Routes are type-safe Kotlin serialization objects.

@@ -1,10 +1,5 @@
 package com.flutterffi.mffiapp.feature.profile
 
-import com.flutterffi.mffiapp.core.domain.model.FeatureCard
+import com.flutterffi.mffiapp.feature.shared.state.FeatureModuleUiState
 
-data class ProfileUiState(
-    val title: String = "Profile",
-    val summary: String = "Account settings, preferences, and environment details.",
-    val cards: List<FeatureCard> = emptyList(),
-    val isLoading: Boolean = true,
-)
+typealias ProfileUiState = FeatureModuleUiState

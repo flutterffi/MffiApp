@@ -6,6 +6,9 @@ import com.flutterffi.mffiapp.core.data.remote.KtorMffiRemoteDataSource
 import com.flutterffi.mffiapp.core.data.remote.MffiRemoteDataSource
 import com.flutterffi.mffiapp.core.data.repository.DefaultMffiRepository
 import com.flutterffi.mffiapp.core.domain.repository.MffiRepository
+import com.flutterffi.mffiapp.core.domain.usecase.EnsureDefaultFeatureCardsUseCase
+import com.flutterffi.mffiapp.core.domain.usecase.ObserveFeatureCardsUseCase
+import com.flutterffi.mffiapp.core.domain.usecase.RefreshPreviewImageUseCase
 import com.flutterffi.mffiapp.feature.explore.ExploreViewModel
 import com.flutterffi.mffiapp.feature.home.HomeViewModel
 import com.flutterffi.mffiapp.feature.messages.MessagesViewModel
@@ -57,6 +60,9 @@ val appModule = module {
 
     single { KtorMffiRemoteDataSource(get()) } bind MffiRemoteDataSource::class
     single { DefaultMffiRepository(get(), get()) } bind MffiRepository::class
+    factory { EnsureDefaultFeatureCardsUseCase(get()) }
+    factory { ObserveFeatureCardsUseCase(get()) }
+    factory { RefreshPreviewImageUseCase(get()) }
 
     viewModelOf(::HomeViewModel)
     viewModelOf(::ExploreViewModel)

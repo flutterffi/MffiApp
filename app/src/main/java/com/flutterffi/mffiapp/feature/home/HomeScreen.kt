@@ -11,5 +11,6 @@ fun HomeScreen(uiState: HomeUiState) {
         cards = uiState.cards,
         previewImageUrl = uiState.previewImageUrl,
         isLoading = uiState.isLoading,
+        errorMessage = uiState.errorMessage,
     )
 }
