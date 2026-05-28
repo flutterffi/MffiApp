@@ -55,9 +55,7 @@ Kotlin Android app architecture skeleton.
 Run:
 
 ```bash
-./gradlew checkArchitecture
-./gradlew :app:assembleDebug
-./gradlew :core:domain:testDebugUnitTest :core:data:testDebugUnitTest
+./gradlew verifyMffiApp
 ```
 
 More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)

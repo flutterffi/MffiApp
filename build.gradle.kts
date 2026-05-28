@@ -95,3 +95,14 @@ tasks.register("checkArchitecture") {
         }
     }
 }
+
+tasks.register("verifyMffiApp") {
+    group = "verification"
+    description = "Runs architecture checks, core unit tests, and the debug app build."
+    dependsOn(
+        "checkArchitecture",
+        ":core:domain:testDebugUnitTest",
+        ":core:data:testDebugUnitTest",
+        ":app:assembleDebug",
+    )
+}
