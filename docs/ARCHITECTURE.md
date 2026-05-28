@@ -84,9 +84,18 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Ktor Client handles network transport.
 - Kotlinx Serialization handles DTO decoding.
 - Room stores local entities and exposes Flow-backed queries.
+- Room migrations are explicit when persisted entity columns change.
 - Koin wires app dependencies without annotation processing.
 - KSP is used for Room code generation.
 - Coil renders remote image URLs in Compose.
+
+## Home Dashboard Flow
+
+- `HomeViewModel` observes cached Home cards through `ObserveFeatureCardsUseCase`.
+- `RefreshHomeDashboardUseCase` refreshes remote dashboard content through the repository.
+- `DefaultMffiRepository` fetches a remote photo with Ktor, writes the result into Room, and returns the stable thumbnail URL.
+- Room emits the updated card list through Flow, and Compose renders stable `String` image URLs with Coil.
+- Home exposes retry from the UI while keeping app-wide startup work outside the feature ViewModel.
 
 ## Dependency Injection
 

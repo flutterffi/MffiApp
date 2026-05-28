@@ -5,9 +5,10 @@ sealed interface AppResult<out T> {
     data class Error(val message: String, val cause: Throwable? = null) : AppResult<Nothing>
 }
 
-inline fun <T> runAppCatching(block: () -> T): AppResult<T> {
-    return runCatching(block).fold(
-        onSuccess = { AppResult.Success(it) },
-        onFailure = { AppResult.Error(message = it.message ?: "Unknown error", cause = it) },
-    )
+suspend inline fun <T> runAppCatching(block: suspend () -> T): AppResult<T> {
+    return try {
+        AppResult.Success(block())
+    } catch (error: Throwable) {
+        AppResult.Error(message = error.message ?: "Unknown error", cause = error)
+    }
 }

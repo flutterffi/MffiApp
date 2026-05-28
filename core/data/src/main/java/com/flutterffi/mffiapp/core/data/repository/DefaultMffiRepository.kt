@@ -19,6 +19,7 @@ class DefaultMffiRepository(
                     id = entity.id,
                     title = entity.title,
                     description = entity.description,
+                    imageUrl = entity.imageUrl,
                 )
             }
         }
@@ -32,6 +33,7 @@ class DefaultMffiRepository(
                 FeatureCardEntity(module = "home", title = "Dashboard", description = "Compose UI backed by Flow state."),
                 FeatureCardEntity(module = "home", title = "Persistence", description = "Room stores feature cards locally."),
                 FeatureCardEntity(module = "home", title = "Networking", description = "Ktor Client defines the API boundary."),
+                FeatureCardEntity(module = "home", title = "Remote Preview", description = "Remote content is cached locally after refresh."),
                 FeatureCardEntity(module = "explore", title = "Modules", description = "Feature packages stay independently owned."),
                 FeatureCardEntity(module = "explore", title = "Resources", description = "Icons, colors, spacing, and theme are centralized."),
                 FeatureCardEntity(module = "explore", title = "Images", description = "Coil renders remote images in Compose."),
@@ -45,7 +47,26 @@ class DefaultMffiRepository(
         )
     }
 
-    override suspend fun refreshPreviewImage(): String? {
-        return runCatching { remoteDataSource.getPreviewPhoto().thumbnailUrl }.getOrNull()
+    override suspend fun refreshHomeDashboard(): String? {
+        val photo = remoteDataSource.getPreviewPhoto()
+        val updatedRows = featureCardDao.updateCardDetails(
+            module = "home",
+            title = "Remote Preview",
+            description = photo.title,
+            imageUrl = photo.thumbnailUrl,
+        )
+        if (updatedRows == 0) {
+            featureCardDao.insertAll(
+                listOf(
+                    FeatureCardEntity(
+                        module = "home",
+                        title = "Remote Preview",
+                        description = photo.title,
+                        imageUrl = photo.thumbnailUrl,
+                    ),
+                ),
+            )
+        }
+        return photo.thumbnailUrl
     }
 }

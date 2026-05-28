@@ -22,6 +22,7 @@ class DefaultMffiRepositoryTest {
                     module = "home",
                     title = "Dashboard",
                     description = "Compose UI backed by Flow state.",
+                    imageUrl = "https://example.com/dashboard.png",
                 ),
             ),
         )
@@ -33,6 +34,7 @@ class DefaultMffiRepositoryTest {
         assertEquals(7, cards.first().id)
         assertEquals("Dashboard", cards.first().title)
         assertEquals("Compose UI backed by Flow state.", cards.first().description)
+        assertEquals("https://example.com/dashboard.png", cards.first().imageUrl)
         assertEquals("home", dao.observedModule)
     }
 
@@ -43,11 +45,60 @@ class DefaultMffiRepositoryTest {
 
         repository.seedDefaults()
 
-        assertEquals(12, dao.insertedItems.size)
+        assertEquals(13, dao.insertedItems.size)
         assertTrue(dao.insertedItems.any { it.module == "home" })
         assertTrue(dao.insertedItems.any { it.module == "explore" })
         assertTrue(dao.insertedItems.any { it.module == "messages" })
         assertTrue(dao.insertedItems.any { it.module == "profile" })
+        assertTrue(dao.insertedItems.any { it.title == "Remote Preview" })
+    }
+
+    @Test
+    fun `refresh home dashboard updates cached remote preview card`() = runTest {
+        val dao = FakeFeatureCardDao(
+            initialEntities = listOf(
+                FeatureCardEntity(
+                    id = 1,
+                    module = "home",
+                    title = "Remote Preview",
+                    description = "Remote content is cached locally after refresh.",
+                ),
+            ),
+        )
+        val repository = DefaultMffiRepository(
+            featureCardDao = dao,
+            remoteDataSource = FakeRemoteDataSource(
+                title = "Remote title",
+                thumbnailUrl = "https://example.com/thumb.png",
+            ),
+        )
+
+        val result = repository.refreshHomeDashboard()
+
+        assertEquals("https://example.com/thumb.png", result)
+        val card = repository.observeFeatureCards("home").first().first()
+        assertEquals("Remote title", card.description)
+        assertEquals("https://example.com/thumb.png", card.imageUrl)
+    }
+
+    @Test
+    fun `refresh home dashboard inserts cached remote preview card when missing`() = runTest {
+        val dao = FakeFeatureCardDao()
+        val repository = DefaultMffiRepository(
+            featureCardDao = dao,
+            remoteDataSource = FakeRemoteDataSource(
+                title = "Remote title",
+                thumbnailUrl = "https://example.com/thumb.png",
+            ),
+        )
+
+        val result = repository.refreshHomeDashboard()
+
+        assertEquals("https://example.com/thumb.png", result)
+        assertEquals(1, dao.insertedItems.size)
+        assertEquals("Remote Preview", dao.insertedItems.first().title)
+        assertEquals("Remote title", dao.insertedItems.first().description)
+        assertEquals("https://example.com/thumb.png", dao.insertedItems.first().imageUrl)
     }
 
     @Test
@@ -61,27 +112,15 @@ class DefaultMffiRepositoryTest {
     }
 
     @Test
-    fun `refresh preview image returns thumbnail url`() = runTest {
-        val repository = DefaultMffiRepository(
-            featureCardDao = FakeFeatureCardDao(),
-            remoteDataSource = FakeRemoteDataSource(thumbnailUrl = "https://example.com/thumb.png"),
-        )
-
-        val result = repository.refreshPreviewImage()
-
-        assertEquals("https://example.com/thumb.png", result)
-    }
-
-    @Test
-    fun `refresh preview image returns null when remote fails`() = runTest {
+    fun `refresh home dashboard throws when remote fails`() = runTest {
         val repository = DefaultMffiRepository(
             featureCardDao = FakeFeatureCardDao(),
             remoteDataSource = FakeRemoteDataSource(failure = IllegalStateException("Remote failed")),
         )
 
-        val result = repository.refreshPreviewImage()
+        val result = runCatching { repository.refreshHomeDashboard() }
 
-        assertEquals(null, result)
+        assertTrue(result.isFailure)
     }
 }
 
@@ -106,11 +145,30 @@ private class FakeFeatureCardDao(
 
     override suspend fun insertAll(items: List<FeatureCardEntity>) {
         insertedItems = items
-        entities.value = items
+        entities.value = entities.value + items
+    }
+
+    override suspend fun updateCardDetails(
+        module: String,
+        title: String,
+        description: String,
+        imageUrl: String?,
+    ): Int {
+        var updatedRows = 0
+        entities.value = entities.value.map { entity ->
+            if (entity.module == module && entity.title == title) {
+                updatedRows += 1
+                entity.copy(description = description, imageUrl = imageUrl)
+            } else {
+                entity
+            }
+        }
+        return updatedRows
     }
 }
 
 private class FakeRemoteDataSource(
+    private val title: String = "Preview",
     private val thumbnailUrl: String = "https://example.com/default-thumb.png",
     private val failure: Throwable? = null,
 ) : MffiRemoteDataSource {
@@ -118,7 +176,7 @@ private class FakeRemoteDataSource(
         failure?.let { throw it }
         return PreviewPhotoDto(
             id = 1,
-            title = "Preview",
+            title = title,
             url = "https://example.com/image.png",
             thumbnailUrl = thumbnailUrl,
         )

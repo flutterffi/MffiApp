@@ -51,6 +51,7 @@ Kotlin Android app architecture skeleton.
 - Network transport uses Ktor Client and Kotlinx Serialization.
 - Local persistence uses Room with KSP.
 - Dependency injection uses Koin.
+- Home demonstrates a Ktor refresh, Room cache update, Flow observation, and Compose retry UI.
 - Remote images render through Coil with stable `String` URL models and stable list keys.
 - Android resources are wrapped from Kotlin through `core/designsystem/icons`.
 - App-wide color, typography, spacing, and theme decisions stay in `core/designsystem/theme`.

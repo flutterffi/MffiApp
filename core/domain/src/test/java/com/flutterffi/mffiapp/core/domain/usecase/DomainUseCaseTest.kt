@@ -35,9 +35,9 @@ class DomainUseCaseTest {
     }
 
     @Test
-    fun `refresh preview image returns success`() = runTest {
+    fun `refresh home dashboard returns success`() = runTest {
         val repository = FakeMffiRepository(previewImageUrl = "https://example.com/image.png")
-        val useCase = RefreshPreviewImageUseCase(repository)
+        val useCase = RefreshHomeDashboardUseCase(repository)
 
         val result = useCase()
 
@@ -45,10 +45,10 @@ class DomainUseCaseTest {
     }
 
     @Test
-    fun `refresh preview image wraps repository error`() = runTest {
+    fun `refresh home dashboard wraps repository error`() = runTest {
         val failure = IllegalStateException("Network unavailable")
         val repository = FakeMffiRepository(refreshFailure = failure)
-        val useCase = RefreshPreviewImageUseCase(repository)
+        val useCase = RefreshHomeDashboardUseCase(repository)
 
         val result = useCase()
 
@@ -77,7 +77,7 @@ private class FakeMffiRepository(
         seedCalls += 1
     }
 
-    override suspend fun refreshPreviewImage(): String? {
+    override suspend fun refreshHomeDashboard(): String? {
         refreshFailure?.let { throw it }
         return previewImageUrl
     }

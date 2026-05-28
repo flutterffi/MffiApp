@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,7 +31,9 @@ fun MffiModuleScreen(
     cards: List<FeatureCard>,
     previewImageUrl: String? = null,
     isLoading: Boolean,
+    isRefreshing: Boolean = false,
     errorMessage: String? = null,
+    onRetry: (() -> Unit)? = null,
 ) {
     val spacing = LocalMffiSpacing.current
 
@@ -60,7 +63,7 @@ fun MffiModuleScreen(
             }
         }
 
-        if (isLoading) {
+        if (isLoading || isRefreshing) {
             item(key = "loading") {
                 Box(
                     modifier = Modifier
@@ -81,12 +84,21 @@ fun MffiModuleScreen(
                         containerColor = MaterialTheme.colorScheme.errorContainer,
                     ),
                 ) {
-                    Text(
-                        text = errorMessage,
+                    Column(
                         modifier = Modifier.padding(spacing.large),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                    )
+                        verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    ) {
+                        Text(
+                            text = errorMessage,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                        if (onRetry != null) {
+                            Button(onClick = onRetry) {
+                                Text(text = "Retry")
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -142,6 +154,16 @@ private fun FeatureCardRow(card: FeatureCard) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            if (card.imageUrl != null) {
+                AsyncImage(
+                    model = card.imageUrl,
+                    contentDescription = card.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(16f / 9f),
+                )
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.flutterffi.mffiapp.core.data.di
 
 import androidx.room.Room
+import com.flutterffi.mffiapp.core.data.local.MIGRATION_1_2
 import com.flutterffi.mffiapp.core.data.local.MffiDatabase
 import com.flutterffi.mffiapp.core.data.remote.KtorMffiRemoteDataSource
 import com.flutterffi.mffiapp.core.data.remote.MffiRemoteDataSource
@@ -24,7 +25,9 @@ val dataModule = module {
             androidContext(),
             MffiDatabase::class.java,
             "mffi.db",
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     single { get<MffiDatabase>().featureCardDao() }

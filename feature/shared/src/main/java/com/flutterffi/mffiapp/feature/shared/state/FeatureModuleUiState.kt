@@ -8,5 +8,6 @@ data class FeatureModuleUiState(
     val cards: List<FeatureCard> = emptyList(),
     val previewImageUrl: String? = null,
     val isLoading: Boolean = true,
+    val isRefreshing: Boolean = false,
     val errorMessage: String? = null,
 )

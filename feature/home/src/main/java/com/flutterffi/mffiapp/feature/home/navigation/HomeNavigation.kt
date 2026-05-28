@@ -12,6 +12,9 @@ fun NavGraphBuilder.homeScreen() {
     composable<HomeRoute> {
         val viewModel: HomeViewModel = koinViewModel()
         val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-        HomeScreen(uiState = uiState.value)
+        HomeScreen(
+            uiState = uiState.value,
+            onRefresh = viewModel::refresh,
+        )
     }
 }

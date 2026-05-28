@@ -16,4 +16,7 @@ interface FeatureCardDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(items: List<FeatureCardEntity>)
+
+    @Query("UPDATE feature_cards SET description = :description, image_url = :imageUrl WHERE module = :module AND title = :title")
+    suspend fun updateCardDetails(module: String, title: String, description: String, imageUrl: String?): Int
 }
