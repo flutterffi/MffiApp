@@ -6,6 +6,7 @@ Kotlin Android app architecture skeleton.
 
 - Gradle 9.4.1
 - Android Gradle Plugin 9.2.1
+- Android 12+ minimum, latest-first device policy
 - Kotlin 2.3.21
 - Jetpack Compose
 - Material 3
@@ -38,6 +39,7 @@ Kotlin Android app architecture skeleton.
 - One feature owns its `UiState`, `ViewModel`, and `Screen`.
 - Feature Gradle modules do not depend on each other.
 - `:app` is the only module that depends on all feature modules.
+- Device support follows a latest-first policy; old Android releases are not a compatibility target.
 - Shared Android, Kotlin, Java 21, and Compose Gradle defaults live in `build-logic`.
 - Core data and domain bindings live in core-owned Koin modules.
 - App startup work is coordinated from the application module.

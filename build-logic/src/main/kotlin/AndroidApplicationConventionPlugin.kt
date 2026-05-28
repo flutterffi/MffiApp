@@ -11,12 +11,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             compileSdk = 36
 
             defaultConfig {
-                minSdk = 24
+                minSdk = 31
                 targetSdk = 36
-
-                vectorDrawables {
-                    useSupportLibrary = true
-                }
             }
 
             compileOptions {
