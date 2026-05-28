@@ -85,6 +85,13 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - KSP is used for Room code generation.
 - Coil renders remote image URLs in Compose.
 
+## Testing
+
+- Core domain use cases are covered by JVM unit tests with `kotlin-test` and `kotlinx-coroutines-test`.
+- Core data repository behavior is covered with fake DAO and remote data source implementations.
+- Fast architecture checks should run `:core:domain:testDebugUnitTest` and `:core:data:testDebugUnitTest`.
+- Full app verification should run `:app:assembleDebug`.
+
 ## Compose Image Stability
 
 - Pass stable `String` URLs directly to Coil `AsyncImage`.

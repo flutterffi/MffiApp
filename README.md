@@ -55,6 +55,7 @@ Run:
 
 ```bash
 ./gradlew :app:assembleDebug
+./gradlew :core:domain:testDebugUnitTest :core:data:testDebugUnitTest
 ```
 
 More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
