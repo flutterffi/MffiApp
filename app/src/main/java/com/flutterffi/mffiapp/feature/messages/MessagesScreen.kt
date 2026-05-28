@@ -8,6 +8,7 @@ fun MessagesScreen(uiState: MessagesUiState) {
     MffiModuleScreen(
         title = uiState.title,
         summary = uiState.summary,
-        items = listOf("System updates", "Task notifications", "Runtime events"),
+        cards = uiState.cards,
+        isLoading = uiState.isLoading,
     )
 }

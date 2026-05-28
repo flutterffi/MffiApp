@@ -8,6 +8,7 @@ fun ExploreScreen(uiState: ExploreUiState) {
     MffiModuleScreen(
         title = uiState.title,
         summary = uiState.summary,
-        items = listOf("Feature catalog", "Native bridge", "Experiment area"),
+        cards = uiState.cards,
+        isLoading = uiState.isLoading,
     )
 }

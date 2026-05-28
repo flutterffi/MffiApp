@@ -7,7 +7,14 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 - Kotlin
 - Jetpack Compose
 - Material 3
-- Navigation Compose
+- Type-safe Navigation Compose
+- Coroutines and Flow
+- Lifecycle KTX
+- Ktor Client
+- Kotlinx Serialization
+- Room with KSP
+- Koin
+- Coil
 - Lifecycle ViewModel
 - Android vector resources
 
@@ -17,6 +24,12 @@ The app starts as a Kotlin Android skeleton using official Jetpack libraries.
 core/designsystem/colors    Color definitions
 core/designsystem/icons     Drawable icon access
 core/designsystem/theme     Material theme, typography, spacing
+core/data/local             Room database, DAO, entities
+core/data/remote            Ktor Client data source and DTOs
+core/data/repository        Repository implementations
+core/domain/model           Domain models
+core/domain/repository      Repository contracts
+core/di                     Koin dependency modules
 core/navigation             App routes and bottom navigation
 core/resources              String/resource access wrappers
 feature/<module>            MVVM screen module
@@ -32,7 +45,16 @@ Each feature starts with:
 <Feature>Screen.kt
 ```
 
-Keep UI state immutable. The ViewModel owns state mutation. The Screen renders state and sends user events back to the ViewModel.
+Keep UI state immutable. The ViewModel exposes `StateFlow`, owns state mutation, and launches coroutine work in `viewModelScope`. The Screen renders state through `collectAsStateWithLifecycle` and sends user events back to the ViewModel.
+
+## Infrastructure
+
+- Ktor Client handles network transport.
+- Kotlinx Serialization handles DTO decoding.
+- Room stores local entities and exposes Flow-backed queries.
+- Koin wires app dependencies without annotation processing.
+- KSP is used for Room code generation.
+- Coil renders remote image URLs in Compose.
 
 ## Current Tabs
 

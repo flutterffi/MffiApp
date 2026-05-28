@@ -7,8 +7,12 @@ Kotlin Android app architecture skeleton.
 - Kotlin 2.3.20
 - Jetpack Compose
 - Material 3
-- Navigation Compose
-- Lifecycle ViewModel
+- Type-safe Navigation Compose
+- Coroutines, Flow, and Lifecycle KTX
+- Ktor Client with Kotlinx Serialization
+- Room with KSP
+- Koin
+- Coil
 - MVVM per feature module
 
 ## Structure
@@ -16,6 +20,9 @@ Kotlin Android app architecture skeleton.
 ```text
 app/src/main/java/com/flutterffi/mffiapp/
   core/designsystem/   Theme, colors, typography, icons, resources
+  core/data/           Ktor remote source, Room database, repository implementation
+  core/domain/         App models and repository contracts
+  core/di/             Koin modules
   core/navigation/     Bottom tabs and app routes
   feature/             Home, Explore, Messages, Profile modules
 ```
@@ -25,6 +32,12 @@ app/src/main/java/com/flutterffi/mffiapp/
 - One feature owns its `UiState`, `ViewModel`, and `Screen`.
 - Shared UI rules live under `core/designsystem`.
 - Route definitions and bottom tabs live under `core/navigation`.
+- Routes are type-safe Kotlin serialization objects.
+- Async state flows through Coroutines, Flow, and `collectAsStateWithLifecycle`.
+- Network transport uses Ktor Client and Kotlinx Serialization.
+- Local persistence uses Room with KSP.
+- Dependency injection uses Koin.
+- Remote images render through Coil.
 - Android resources are wrapped from Kotlin through `core/resources` and `core/designsystem/icons`.
 - App-wide color, typography, spacing, and theme decisions stay in `core/designsystem/theme`.
 

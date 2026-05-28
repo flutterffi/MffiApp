@@ -8,6 +8,7 @@ fun ProfileScreen(uiState: ProfileUiState) {
     MffiModuleScreen(
         title = uiState.title,
         summary = uiState.summary,
-        items = listOf("Account", "Preferences", "Environment"),
+        cards = uiState.cards,
+        isLoading = uiState.isLoading,
     )
 }

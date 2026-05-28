@@ -8,6 +8,8 @@ fun HomeScreen(uiState: HomeUiState) {
     MffiModuleScreen(
         title = uiState.title,
         summary = uiState.summary,
-        items = listOf("Dashboard", "Quick entry", "Recent activity"),
+        cards = uiState.cards,
+        previewImageUrl = uiState.previewImageUrl,
+        isLoading = uiState.isLoading,
     )
 }
