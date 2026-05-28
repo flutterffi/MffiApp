@@ -85,6 +85,14 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - KSP is used for Room code generation.
 - Coil renders remote image URLs in Compose.
 
+## Dependency Injection
+
+- `:app` is the Koin composition root.
+- App-wide infrastructure bindings live in `appModule`.
+- Feature ViewModel bindings live in feature-owned modules such as `homeModule` and `profileModule`.
+- Feature modules depend on Koin core ViewModel support, not Android Koin APIs.
+- `MffiApplication` loads the full `appModules` list.
+
 ## Testing
 
 - Core domain use cases are covered by JVM unit tests with `kotlin-test` and `kotlinx-coroutines-test`.

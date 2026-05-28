@@ -9,10 +9,10 @@ import com.flutterffi.mffiapp.core.domain.repository.MffiRepository
 import com.flutterffi.mffiapp.core.domain.usecase.EnsureDefaultFeatureCardsUseCase
 import com.flutterffi.mffiapp.core.domain.usecase.ObserveFeatureCardsUseCase
 import com.flutterffi.mffiapp.core.domain.usecase.RefreshPreviewImageUseCase
-import com.flutterffi.mffiapp.feature.explore.ExploreViewModel
-import com.flutterffi.mffiapp.feature.home.HomeViewModel
-import com.flutterffi.mffiapp.feature.messages.MessagesViewModel
-import com.flutterffi.mffiapp.feature.profile.ProfileViewModel
+import com.flutterffi.mffiapp.feature.explore.di.exploreModule
+import com.flutterffi.mffiapp.feature.home.di.homeModule
+import com.flutterffi.mffiapp.feature.messages.di.messagesModule
+import com.flutterffi.mffiapp.feature.profile.di.profileModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -22,7 +22,6 @@ import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -63,9 +62,12 @@ val appModule = module {
     factory { EnsureDefaultFeatureCardsUseCase(get()) }
     factory { ObserveFeatureCardsUseCase(get()) }
     factory { RefreshPreviewImageUseCase(get()) }
-
-    viewModelOf(::HomeViewModel)
-    viewModelOf(::ExploreViewModel)
-    viewModelOf(::MessagesViewModel)
-    viewModelOf(::ProfileViewModel)
 }
+
+val appModules = listOf(
+    appModule,
+    homeModule,
+    exploreModule,
+    messagesModule,
+    profileModule,
+)
