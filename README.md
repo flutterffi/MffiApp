@@ -4,7 +4,7 @@ Kotlin Android app architecture skeleton.
 
 ## Stack
 
-- Kotlin
+- Kotlin 2.3.20
 - Jetpack Compose
 - Material 3
 - Navigation Compose
