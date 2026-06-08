@@ -145,7 +145,8 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Images are exposed through `MffiImages`.
 - Shared UI text is exposed through `MffiStrings`.
 - Fonts are centralized through `MffiFontFamilies`; the project uses platform default fonts until a real brand font is chosen.
-- Theme colors and spacing are centralized in `MffiColors`, `MffiTheme`, and `MffiSpacing`.
+- Theme colors, spacing, radii, and reusable layout metrics are centralized in `MffiColors`, `MffiTheme`, `MffiSpacing`, `MffiRadii`, and `MffiLayoutMetrics`.
+- Feature UI should consume design tokens from composition locals instead of declaring ad hoc dimensions, corner radii, or media aspect ratios.
 
 ## Adaptation Policy
 

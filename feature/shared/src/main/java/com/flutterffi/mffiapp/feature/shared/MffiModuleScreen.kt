@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Card
@@ -32,6 +33,8 @@ import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneDarkLargeFontPr
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneLightPreview
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiTabletLightPreview
 import com.flutterffi.mffiapp.core.designsystem.strings.MffiStrings
+import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiLayoutMetrics
+import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiRadii
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
 import com.flutterffi.mffiapp.core.designsystem.theme.MffiTheme
 import com.flutterffi.mffiapp.core.domain.model.FeatureCard
@@ -47,6 +50,7 @@ fun MffiModuleScreen(
     errorMessage: String? = null,
     onRetry: (() -> Unit)? = null,
 ) {
+    val radii = LocalMffiRadii.current
     val spacing = LocalMffiSpacing.current
 
     MffiAdaptiveContent(modifier = Modifier.fillMaxSize()) {
@@ -93,6 +97,7 @@ fun MffiModuleScreen(
                 item(key = "error-$errorMessage") {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(radii.medium),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                         ),
@@ -128,8 +133,12 @@ fun MffiModuleScreen(
 
 @Composable
 private fun RemotePreviewCard(imageUrl: String) {
+    val layoutMetrics = LocalMffiLayoutMetrics.current
+    val radii = LocalMffiRadii.current
+
     Card(
         modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(radii.medium),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
@@ -142,17 +151,20 @@ private fun RemotePreviewCard(imageUrl: String) {
             error = painterResource(MffiImages.Placeholder.id),
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(16f / 9f),
+                .aspectRatio(layoutMetrics.previewImageAspectRatio),
         )
     }
 }
 
 @Composable
 private fun FeatureCardRow(card: FeatureCard) {
+    val layoutMetrics = LocalMffiLayoutMetrics.current
+    val radii = LocalMffiRadii.current
     val spacing = LocalMffiSpacing.current
 
     Card(
         modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(radii.medium),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
@@ -179,7 +191,7 @@ private fun FeatureCardRow(card: FeatureCard) {
                     error = painterResource(MffiImages.Placeholder.id),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(16f / 9f),
+                        .aspectRatio(layoutMetrics.previewImageAspectRatio),
                 )
             }
         }

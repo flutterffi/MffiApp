@@ -56,6 +56,8 @@ fun MffiTheme(
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
+        LocalMffiLayoutMetrics provides MffiLayoutMetrics(),
+        LocalMffiRadii provides MffiRadii(),
         LocalMffiSpacing provides MffiSpacing(),
         LocalMffiWindowAdaptiveInfo provides adaptiveInfo,
     ) {
