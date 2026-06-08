@@ -16,6 +16,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,9 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
 import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiAdaptiveContent
+import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiWindowAdaptiveInfo
 import com.flutterffi.mffiapp.core.designsystem.images.MffiImages
+import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneDarkLargeFontPreview
+import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneLightPreview
+import com.flutterffi.mffiapp.core.designsystem.preview.MffiTabletLightPreview
 import com.flutterffi.mffiapp.core.designsystem.strings.MffiStrings
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
+import com.flutterffi.mffiapp.core.designsystem.theme.MffiTheme
 import com.flutterffi.mffiapp.core.domain.model.FeatureCard
 
 @Composable
@@ -178,3 +185,71 @@ private fun FeatureCardRow(card: FeatureCard) {
         }
     }
 }
+
+@MffiPhoneLightPreview
+@Composable
+private fun MffiModuleScreenPhonePreview() {
+    MffiModuleScreenPreviewContent()
+}
+
+@MffiTabletLightPreview
+@Composable
+private fun MffiModuleScreenTabletPreview() {
+    MffiModuleScreenPreviewContent(
+        adaptiveInfo = MffiWindowAdaptiveInfo(
+            widthSizeClass = WindowWidthSizeClass.Expanded,
+            heightSizeClass = WindowHeightSizeClass.Medium,
+        ),
+    )
+}
+
+@MffiPhoneDarkLargeFontPreview
+@Composable
+private fun MffiModuleScreenErrorPreview() {
+    MffiModuleScreenPreviewContent(
+        darkTheme = true,
+        errorMessage = "Preview data could not be refreshed.",
+    )
+}
+
+@Composable
+private fun MffiModuleScreenPreviewContent(
+    darkTheme: Boolean = false,
+    adaptiveInfo: MffiWindowAdaptiveInfo = MffiWindowAdaptiveInfo(
+        widthSizeClass = WindowWidthSizeClass.Compact,
+        heightSizeClass = WindowHeightSizeClass.Medium,
+    ),
+    errorMessage: String? = null,
+) {
+    MffiTheme(
+        darkTheme = darkTheme,
+        adaptiveInfo = adaptiveInfo,
+    ) {
+        MffiModuleScreen(
+            title = "Home",
+            summary = "Reusable feature screen layout for production modules.",
+            cards = previewFeatureCards,
+            isLoading = false,
+            errorMessage = errorMessage,
+            onRetry = {},
+        )
+    }
+}
+
+private val previewFeatureCards = listOf(
+    FeatureCard(
+        id = 1L,
+        title = "Architecture",
+        description = "MVVM feature modules with domain use cases and Flow-backed state.",
+    ),
+    FeatureCard(
+        id = 2L,
+        title = "Adaptive UI",
+        description = "Shared layout rules for phone, tablet, dark mode, and large font previews.",
+    ),
+    FeatureCard(
+        id = 3L,
+        title = "Pure Kotlin Stack",
+        description = "Compose, Ktor, Kotlinx Serialization, Room, Koin, and Coil.",
+    ),
+)
