@@ -150,6 +150,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 ## Adaptation Policy
 
 - Runtime window size classification flows through `MffiWindowAdaptiveInfo`.
+- Compact width uses bottom navigation; medium and expanded widths use a navigation rail.
 - Adaptive layout constraints go through `MffiAdaptiveContent`.
 - Phone, tablet, dark mode, and large-font previews should use shared `Mffi*Preview` annotations.
 - Feature screens should consume adaptive design system APIs instead of reading raw window metrics directly.
