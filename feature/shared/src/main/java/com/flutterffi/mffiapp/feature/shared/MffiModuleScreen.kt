@@ -1,7 +1,6 @@
 package com.flutterffi.mffiapp.feature.shared
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,19 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiAdaptiveContent
 import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiWindowAdaptiveInfo
+import com.flutterffi.mffiapp.core.designsystem.components.MffiErrorState
+import com.flutterffi.mffiapp.core.designsystem.components.MffiLoadingState
 import com.flutterffi.mffiapp.core.designsystem.components.MffiRemoteImage
 import com.flutterffi.mffiapp.core.designsystem.components.MffiSurfaceCard
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneDarkLargeFontPreview
@@ -74,41 +71,21 @@ fun MffiModuleScreen(
 
             if (isLoading || isRefreshing) {
                 item(key = "loading") {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(spacing.extraLarge),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    MffiLoadingState()
                 }
             }
 
             if (errorMessage != null) {
                 item(key = "error-$errorMessage") {
-                    MffiSurfaceCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer,
-                        ),
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(spacing.large),
-                            verticalArrangement = Arrangement.spacedBy(spacing.medium),
-                        ) {
-                            Text(
-                                text = errorMessage,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onErrorContainer,
-                            )
-                            if (onRetry != null) {
-                                Button(onClick = onRetry) {
-                                    Text(text = stringResource(MffiStrings.RetryAction.id))
-                                }
-                            }
-                        }
-                    }
+                    MffiErrorState(
+                        message = errorMessage,
+                        actionLabel = if (onRetry != null) {
+                            stringResource(MffiStrings.RetryAction.id)
+                        } else {
+                            null
+                        },
+                        onAction = onRetry,
+                    )
                 }
             }
 

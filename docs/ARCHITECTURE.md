@@ -149,6 +149,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Theme colors, spacing, radii, and reusable layout metrics are centralized in `MffiColors`, `MffiTheme`, `MffiSpacing`, `MffiRadii`, and `MffiLayoutMetrics`.
 - Feature UI should consume design tokens from composition locals instead of declaring ad hoc dimensions, corner radii, or media aspect ratios.
 - Shared visual primitives such as surface cards and remote images live in `core/designsystem/components`.
+- Loading, error, and empty states should use design system state components before feature-local variants are introduced.
 
 ## Adaptation Policy
 
