@@ -88,7 +88,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Room migrations are explicit when persisted entity columns change.
 - Koin wires app dependencies without annotation processing.
 - KSP is used for Room code generation.
-- Coil renders remote image URLs in Compose.
+- Coil-backed image rendering is wrapped by design system components.
 
 ## Home Dashboard Flow
 
@@ -125,6 +125,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 ## Compose Image Stability
 
 - Pass stable `String` URLs directly to Coil `AsyncImage`.
+- Prefer `MffiRemoteImage` for feature UI so placeholder, error, scaling, and aspect ratio rules stay centralized.
 - Avoid creating ad hoc image model objects in ViewModels or during every recomposition.
 - Use stable keys for `LazyColumn` items that render images or remote-backed content.
 - Domain list models should expose durable identifiers from the data layer instead of relying on list position.
@@ -147,6 +148,7 @@ This keeps per-feature modules isolated while still allowing Kotlinx Serializati
 - Fonts are centralized through `MffiFontFamilies`; the project uses platform default fonts until a real brand font is chosen.
 - Theme colors, spacing, radii, and reusable layout metrics are centralized in `MffiColors`, `MffiTheme`, `MffiSpacing`, `MffiRadii`, and `MffiLayoutMetrics`.
 - Feature UI should consume design tokens from composition locals instead of declaring ad hoc dimensions, corner radii, or media aspect ratios.
+- Shared visual primitives such as surface cards and remote images live in `core/designsystem/components`.
 
 ## Adaptation Policy
 

@@ -4,16 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,19 +19,15 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import coil3.compose.AsyncImage
 import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiAdaptiveContent
 import com.flutterffi.mffiapp.core.designsystem.adaptive.MffiWindowAdaptiveInfo
-import com.flutterffi.mffiapp.core.designsystem.images.MffiImages
+import com.flutterffi.mffiapp.core.designsystem.components.MffiRemoteImage
+import com.flutterffi.mffiapp.core.designsystem.components.MffiSurfaceCard
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneDarkLargeFontPreview
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiPhoneLightPreview
 import com.flutterffi.mffiapp.core.designsystem.preview.MffiTabletLightPreview
 import com.flutterffi.mffiapp.core.designsystem.strings.MffiStrings
-import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiLayoutMetrics
-import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiRadii
 import com.flutterffi.mffiapp.core.designsystem.theme.LocalMffiSpacing
 import com.flutterffi.mffiapp.core.designsystem.theme.MffiTheme
 import com.flutterffi.mffiapp.core.domain.model.FeatureCard
@@ -50,7 +43,6 @@ fun MffiModuleScreen(
     errorMessage: String? = null,
     onRetry: (() -> Unit)? = null,
 ) {
-    val radii = LocalMffiRadii.current
     val spacing = LocalMffiSpacing.current
 
     MffiAdaptiveContent(modifier = Modifier.fillMaxSize()) {
@@ -95,9 +87,8 @@ fun MffiModuleScreen(
 
             if (errorMessage != null) {
                 item(key = "error-$errorMessage") {
-                    Card(
+                    MffiSurfaceCard(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(radii.medium),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                         ),
@@ -133,42 +124,19 @@ fun MffiModuleScreen(
 
 @Composable
 private fun RemotePreviewCard(imageUrl: String) {
-    val layoutMetrics = LocalMffiLayoutMetrics.current
-    val radii = LocalMffiRadii.current
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(radii.medium),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-    ) {
-        AsyncImage(
-            model = imageUrl,
+    MffiSurfaceCard(modifier = Modifier.fillMaxWidth()) {
+        MffiRemoteImage(
+            imageUrl = imageUrl,
             contentDescription = stringResource(MffiStrings.RemotePreviewContentDescription.id),
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(MffiImages.Placeholder.id),
-            error = painterResource(MffiImages.Placeholder.id),
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(layoutMetrics.previewImageAspectRatio),
         )
     }
 }
 
 @Composable
 private fun FeatureCardRow(card: FeatureCard) {
-    val layoutMetrics = LocalMffiLayoutMetrics.current
-    val radii = LocalMffiRadii.current
     val spacing = LocalMffiSpacing.current
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(radii.medium),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-    ) {
+    MffiSurfaceCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(spacing.large),
             verticalArrangement = Arrangement.spacedBy(spacing.small),
@@ -182,16 +150,10 @@ private fun FeatureCardRow(card: FeatureCard) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (card.imageUrl != null) {
-                AsyncImage(
-                    model = card.imageUrl,
+            card.imageUrl?.let { imageUrl ->
+                MffiRemoteImage(
+                    imageUrl = imageUrl,
                     contentDescription = card.title,
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(MffiImages.Placeholder.id),
-                    error = painterResource(MffiImages.Placeholder.id),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(layoutMetrics.previewImageAspectRatio),
                 )
             }
         }
